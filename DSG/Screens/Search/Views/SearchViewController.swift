@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UIScrollView_InfiniteScroll
 
 class SearchViewController: BaseViewController, SearchPresenterDelegate {
   
@@ -22,10 +23,11 @@ class SearchViewController: BaseViewController, SearchPresenterDelegate {
         // Do any additional setup after loading the view.
         
         initViews()
+        setupInFiniteScrolling()
         
         //Presenter
         presenter.setViewDelegate(delegate: self)
-        presenter.getEvents(searchQuery: "")
+        presenter.getEvents(searchQuery: "", page: 1)
             
         
     }
@@ -44,6 +46,27 @@ class SearchViewController: BaseViewController, SearchPresenterDelegate {
         tblSearchList.register(UINib(nibName: Constants.cellIdentifiers.eventSearchTableViewCellIdentifier, bundle: nil), forCellReuseIdentifier: Constants.cellIdentifiers.eventSearchTableViewCellIdentifier)
     }
     
+    // for paginaation
+    private  func setupInFiniteScrolling() {
+        tblSearchList.setShouldShowInfiniteScrollHandler { (tableView) -> Bool in
+            if self.eventResponse?.events == nil{
+                return false
+            }else{
+                if self.eventResponse?.events?.count ?? 0 <  self.eventResponse?.meta?.total ?? 0{
+                    return true
+                }else{
+                    return false
+                }
+                
+            }
+        }
+        
+        tblSearchList.addInfiniteScroll {(tableView) in
+            let pageTobeLoaded = ((self.eventResponse?.meta?.page ?? 1)+1)
+            self.presenter.getEvents(searchQuery: self.eventSearchField.text ?? "", page: pageTobeLoaded)
+        }
+    }
+    
     //Presenter Delegate Methods
     func presentAlert(title: String, message: String) {
         DispatchQueue.main.async {
@@ -56,31 +79,27 @@ class SearchViewController: BaseViewController, SearchPresenterDelegate {
     }
     
     func populateEventDatas(eventResponse: EventsSearchResponse) {
-        self.eventResponse = eventResponse
+        if eventResponse.meta?.page == 1{
+            self.eventResponse = eventResponse
+        }else{
+            self.eventResponse?.events?.append(contentsOf: eventResponse.events!)
+            self.eventResponse?.meta = eventResponse.meta
+        }
         DispatchQueue.main.async {
             if self.tblSearchList.isHidden{
                 self.tblSearchList.isHidden = false
             }
+            if eventResponse.meta?.page == 1{
+                self.tblSearchList.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+            }
             self.tblSearchList.reloadData()
+            self.tblSearchList.finishInfiniteScroll()
         }
     }
     
 }
 
 
-// MARK: Navigation
-
-extension SearchViewController {
-    
-    //Go to event details screen
-    private func gotoEventDetailsScreen(event : EventsSearchEvent?){
-        let storyBoard = UIStoryboard(name: Constants.StoreboardIdentifers.main, bundle: nil)
-        let eventDetailsVc = storyBoard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifers.eventDetailsViewControllerIdentifer) as! EventDetailsViewController
-        //pass data
-        eventDetailsVc.eventDetails = event
-        navigationController?.pushViewController(eventDetailsVc, animated: true)
-    }
-}
 
 
 // MARK: SearchBar Delegate Methods
@@ -95,7 +114,7 @@ extension SearchViewController : UISearchBarDelegate{
         timer?.invalidate()
         timer = .scheduledTimer(withTimeInterval: 0.7, repeats: false) { [weak self] timer in
             // trigger autocomplete
-            self?.presenter.getEvents(searchQuery: searchText)
+            self?.presenter.getEvents(searchQuery: searchText, page: 1)
         }
         
     }
@@ -131,13 +150,13 @@ extension SearchViewController : UITableViewDataSource,UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let eventObj = self.eventResponse?.events?[indexPath.row]
-        gotoEventDetailsScreen(event: eventObj)
+        presenter.gotoEventDetailsScreen(event: eventObj,vc: self)
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 99.0
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 114.0
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }

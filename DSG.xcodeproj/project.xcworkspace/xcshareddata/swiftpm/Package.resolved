@@ -18,6 +18,15 @@
           "revision": "44450a8f564d7c0165f736ba2250649ff8d3e556",
           "version": "6.3.0"
         }
+      },
+      {
+        "package": "UIScrollView_InfiniteScroll",
+        "repositoryURL": "https://github.com/pronebird/UIScrollView-InfiniteScroll",
+        "state": {
+          "branch": null,
+          "revision": "0fe87a8e185827720cb98b6a7145c8ea8de21fed",
+          "version": "1.2.0"
+        }
       }
     ]
   },

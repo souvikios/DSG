@@ -43,6 +43,7 @@
 		4FCBD1DF266D556E0052EB79 /* PersistentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCBD1DE266D556E0052EB79 /* PersistentManager.swift */; };
 		4FCBD1E2266D55D30052EB79 /* DatastoreCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCBD1E1266D55D30052EB79 /* DatastoreCoordinator.swift */; };
 		4FCBD1E5266D56540052EB79 /* ContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCBD1E4266D56540052EB79 /* ContextManager.swift */; };
+		4FCBD1EE266D74610052EB79 /* UIScrollView_InfiniteScroll in Frameworks */ = {isa = PBXBuildFile; productRef = 4FCBD1ED266D74610052EB79 /* UIScrollView_InfiniteScroll */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FCBD1EE266D74610052EB79 /* UIScrollView_InfiniteScroll in Frameworks */,
 				4FCBD1BF266D33620052EB79 /* Kingfisher in Frameworks */,
 				4FCBD1AD266D014B0052EB79 /* Alamofire in Frameworks */,
 			);
@@ -318,6 +320,7 @@
 			packageProductDependencies = (
 				4FCBD1AC266D014B0052EB79 /* Alamofire */,
 				4FCBD1BE266D33620052EB79 /* Kingfisher */,
+				4FCBD1ED266D74610052EB79 /* UIScrollView_InfiniteScroll */,
 			);
 			productName = DSG;
 			productReference = 4F0363BA266B3E2600056384 /* DSG.app */;
@@ -349,6 +352,7 @@
 			packageReferences = (
 				4FCBD1AB266D014B0052EB79 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				4FCBD1BD266D33620052EB79 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				4FCBD1EC266D74610052EB79 /* XCRemoteSwiftPackageReference "UIScrollView-InfiniteScroll" */,
 			);
 			productRefGroup = 4F0363BB266B3E2600056384 /* Products */;
 			projectDirPath = "";
@@ -484,7 +488,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -539,7 +543,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -627,6 +631,14 @@
 				minimumVersion = 6.3.0;
 			};
 		};
+		4FCBD1EC266D74610052EB79 /* XCRemoteSwiftPackageReference "UIScrollView-InfiniteScroll" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pronebird/UIScrollView-InfiniteScroll";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -639,6 +651,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FCBD1BD266D33620052EB79 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		4FCBD1ED266D74610052EB79 /* UIScrollView_InfiniteScroll */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FCBD1EC266D74610052EB79 /* XCRemoteSwiftPackageReference "UIScrollView-InfiniteScroll" */;
+			productName = UIScrollView_InfiniteScroll;
 		};
 /* End XCSwiftPackageProductDependency section */
 

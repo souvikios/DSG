@@ -24,13 +24,18 @@ class SearchPresenter {
         self.delegate = delegate
     }
     
-    public func getEvents(searchQuery : String){
+    //API Calls
+    public func getEvents(searchQuery : String,page : Int){
         
         if APIClient.NetworkManager.sharedManager.isReachable{
-        let params : [String:AnyObject] = ["client_id" : CLIENT_ID as AnyObject,"q":searchQuery as AnyObject]
-        delegate?.presentLoader(show: true)
+        let params : [String:AnyObject] = ["client_id" : CLIENT_ID as AnyObject,"q":searchQuery as AnyObject,"page" : page as AnyObject]
+        if page == 1{
+            delegate?.presentLoader(show: true)
+        }
         APIClient.sharedInstance.getRequestWithURL(parameters: params, url: ApiConstants.WebServicesApi.search) {[weak self] (response:NSDictionary?, error:NSError?,responseObject: AFDataResponse<Any>?) in
-            self?.delegate?.presentLoader(show: false)
+            if page == 1{
+                self?.delegate?.presentLoader(show: false)
+            }
             if ((error) != nil){
                 print(error.debugDescription)
                 self?.delegate?.presentAlert(title: Constants.DefaultMessages.error, message: response?.value(forKey: "message") as? String ?? "")
@@ -47,7 +52,7 @@ class SearchPresenter {
       }
 }
     
-
+    
     public func parseEventResponse(data:Data?) {
         DispatchQueue.global(qos: .userInitiated).async {[weak self] in
             do {
@@ -58,6 +63,16 @@ class SearchPresenter {
                 print(err.localizedDescription)
             }
         }
+    }
+    
+    
+    //Navigation
+    public func gotoEventDetailsScreen(event : EventsSearchEvent?,vc : UIViewController){
+        let storyBoard = UIStoryboard(name: Constants.StoreboardIdentifers.main, bundle: nil)
+        let eventDetailsVc = storyBoard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifers.eventDetailsViewControllerIdentifer) as! EventDetailsViewController
+        //pass data
+        eventDetailsVc.eventDetails = event
+        vc.navigationController?.pushViewController(eventDetailsVc, animated: true)
     }
   
 }

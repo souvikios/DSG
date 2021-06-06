@@ -6,8 +6,8 @@ import Foundation
 
 struct EventsSearchResponse : Codable {
 
-        let events : [EventsSearchEvent]?
-        let meta : EventsSearchMeta?
+        var events : [EventsSearchEvent]?
+        var meta : EventsSearchMeta?
 
         enum CodingKeys: String, CodingKey {
                 case events = "events"
