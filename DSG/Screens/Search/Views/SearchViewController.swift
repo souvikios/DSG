@@ -122,6 +122,11 @@ extension SearchViewController : UISearchBarDelegate{
         eventSearchField.showsCancelButton = false
     }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        eventSearchField.resignFirstResponder()
+        eventSearchField.showsCancelButton = false
+    }
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         eventSearchField.resignFirstResponder()
         eventSearchField.showsCancelButton = false
